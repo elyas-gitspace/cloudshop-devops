@@ -120,71 +120,71 @@ __3. Phase de Déploiement Manuel (Local - Minikube)__
 
 bash
 - Démarrer l'environnement
-minikube start --driver=docker
+_minikube start --driver=docker_
 
 - Construire dans Minikube
-minikube image build -t frontend:latest ./frontend
+_minikube image build -t frontend:latest ./frontend_
 
 - Déployer sur Kubernetes
-kubectl apply -f kubernetes/
+_kubectl apply -f kubernetes/_
 
 - Accéder à l'application
-minikube service frontend-service --url
+_minikube service frontend-service --url_
 🚀 Commandes de Déploiement
 📋 Cheat Sheet des Commandes Essentielles
 
 ### **Initialisation et Setup:**
 
-bash
+_bash_
 
 __Démarrer Minikube (cluster Kubernetes local):__
 
-minikube start --driver=docker
+_minikube start --driver=docker_
 
 __Vérifier l'état:__
 
-kubectl cluster-info
-minikube status
+_kubectl cluster-info_
+_minikube status_
 
 ### **Construction des Images:**
 
-bash
+_bash_
 
 __Méthode via le Docker de Minikube:__
 
-minikube docker-env
+_minikube docker-env_
 (Exécuter la commande affichée)
 puis
 
-docker build -t frontend:latest ./frontend
+_docker build -t frontend:latest ./frontend_
 
 
 ### **Déploiement sur Kubernetes:**
 
-bash
+_bash_
 
 __Appliquer toutes les configurations:__
 
-kubectl apply -f kubernetes/
+_kubectl apply -f kubernetes/_
 
 ### **Accès aux Services:**
 
-bash
+_bash_
 
 __Frontend (interface web):__
 
-kubectl port-forward service/frontend-service 8080:80
+_kubectl port-forward service/frontend-service 8080:80_
 
 __Navigateur http://localhost:8080__
 
 __Product API (catalogue):__
 
-kubectl port-forward service/product-api-service 5001:5000
+_kubectl port-forward service/product-api-service 5001:5000_
 
 __Tester : curl http://localhost:5001/products__
 
 __Order API (commandes):__
 
-kubectl port-forward service/order-api-service 5002:5000
+_kubectl port-forward service/order-api-service 5002:5000_
 
 __Tester : curl http://localhost:5002/orders__
