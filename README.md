@@ -18,6 +18,7 @@ __Présentation du Projet:__
 CloudShop est un projet DevOps complet qui simule le cycle de vie d'une application e-commerce moderne, depuis le développement jusqu'au déploiement en production.
 
 __Objectif Principal:__
+
 Démontrer les compétences DevOps en construisant une infrastructure complète :
 
 - 3 microservices Flask (Frontend, Product API, Order API)
@@ -29,6 +30,7 @@ Démontrer les compétences DevOps en construisant une infrastructure complète 
 - CI/CD avec GitHub Actions
 
 __⚠️ Note Importante sur l'Automatisation:__
+
 GitHub Actions est utilisé uniquement pour les tests et la validation, tandis que le déploiement se fait manuellement sur Minikube localement
 
 Cette approche est choisie pour :
@@ -76,6 +78,7 @@ __Étapes clés :__
 - __Déploiement Manuel :__ Commandes exécutées localement sur Minikube
 
 ### **🛠️ Workflow Technique**
+
 __1. Phase de Développement (Local)__
 
 - Écriture du code Python
@@ -84,6 +87,7 @@ __1. Phase de Développement (Local)__
 - Vérification : http://localhost:5000
 
 __2. Phase CI Automatisée (GitHub Actions)__
+
 yaml
  .github/workflows/ci-cd.yml
 name: CI/CD Pipeline CloudShop
@@ -91,18 +95,18 @@ name: CI/CD Pipeline CloudShop
 on: [push]  # Déclenché à chaque git push
 
 jobs:
-  validate-and-test:
-    steps:
-    - Tests unitaires Python
-    - Validation syntaxe Dockerfiles
-    - Validation syntaxe YAML Kubernetes  # --dry-run uniquement
+validate-and-test:
+steps:
+- Tests unitaires Python
+- Validation syntaxe Dockerfiles
+- Validation syntaxe YAML Kubernetes  # --dry-run uniquement
     
-  build-and-deploy:
-    if: push sur main
-    steps:
-    - Build images Docker
-    - Simulation déploiement  # Écho seulement, pas de vrai déploiement
-    - Génération rapport
+build-and-deploy:
+if: push sur main
+steps:
+- Build images Docker
+- Simulation déploiement  # Écho seulement, pas de vrai déploiement
+- Génération rapport
 
 __Points clés de GitHub Actions :__
 
@@ -113,6 +117,7 @@ __Points clés de GitHub Actions :__
 Pas de vrai déploiement : Pas de cluster K8s accessible sur GitHub
 
 __3. Phase de Déploiement Manuel (Local - Minikube)__
+
 bash
 - Démarrer l'environnement
 minikube start --driver=docker
@@ -128,20 +133,25 @@ minikube service frontend-service --url
 🚀 Commandes de Déploiement
 📋 Cheat Sheet des Commandes Essentielles
 
-### **Initialisation et Setup**
+### **Initialisation et Setup:**
+
 bash
 
-__Démarrer Minikube (cluster Kubernetes local)__
+__Démarrer Minikube (cluster Kubernetes local):__
+
 minikube start --driver=docker
 
-__Vérifier l'état__
+__Vérifier l'état:__
+
 kubectl cluster-info
 minikube status
 
-### **Construction des Images**
+### **Construction des Images:**
+
 bash
 
-__Méthode via le Docker de Minikube__
+__Méthode via le Docker de Minikube:__
+
 minikube docker-env
 (Exécuter la commande affichée)
 puis
@@ -149,27 +159,32 @@ puis
 docker build -t frontend:latest ./frontend
 
 
-### **Déploiement sur Kubernetes**
+### **Déploiement sur Kubernetes:**
+
 bash
 
-__Appliquer toutes les configurations__
+__Appliquer toutes les configurations:__
+
 kubectl apply -f kubernetes/
 
-### **Accès aux Services**
+### **Accès aux Services:**
 
 bash
-# Frontend (interface web)
+
+__Frontend (interface web):__
 
 kubectl port-forward service/frontend-service 8080:80
 
-__Navigateur : http://localhost:8080__
+__Navigateur http://localhost:8080__
 
-# Product API (catalogue)
+__Product API (catalogue):__
 
 kubectl port-forward service/product-api-service 5001:5000
+
 __Tester : curl http://localhost:5001/products__
 
-# Order API (commandes)
+__Order API (commandes):__
 
 kubectl port-forward service/order-api-service 5002:5000
+
 __Tester : curl http://localhost:5002/orders__
