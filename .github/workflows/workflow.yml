@@ -45,9 +45,9 @@ jobs:
     - name: Valider Dockerfiles
       run: |
         echo "Validation Dockerfiles..."
-        docker build -t test-frontend ./frontend --target=build 2>/dev/null && echo "Frontend Dockerfile valid"
-        docker build -t test-product ./product-api --target=build 2>/dev/null && echo "Product API Dockerfile valid"
-        docker build -t test-order ./order-api --target=build 2>/dev/null && echo "Order API Dockerfile valid"
+        docker build -t test-frontend ./frontend 2>/dev/null && echo "Frontend Dockerfile valid"
+        docker build -t test-product ./product-api 2>/dev/null && echo "Product API Dockerfile valid"
+        docker build -t test-order ./order-api 2>/dev/null && echo "Order API Dockerfile valid"
     # --target=build permet de s'arrêter juste avant l'étape du build
     - name: Valider Kubernetes
       run: |
