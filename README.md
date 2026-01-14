@@ -1,45 +1,48 @@
 ### **CloudShop - Plateforme E-commerce Microservices DevOps**
-__📋 Table des Contenus__
+__📋 Table des Contenus:__
 
-🎯 Présentation du Projet
+- 🎯 Présentation du Projet
 
-🔄 Workflow Global
+- 🔄 Workflow Global
 
-🛠️ Workflow Technique
+- 🛠️ Workflow Technique
 
-🚀 Commandes de Déploiement
+- 🚀 Commandes de Déploiement
 
-🔧 Technologies Utilisées
+- 🔧 Technologies Utilisées
 
-📊 Architecture
+- 📊 Architecture
 
-__Présentation du Projet__
+__Présentation du Projet:__
+
 CloudShop est un projet DevOps complet qui simule le cycle de vie d'une application e-commerce moderne, depuis le développement jusqu'au déploiement en production.
 
-__Objectif Principal__
+__Objectif Principal:__
 Démontrer les compétences DevOps en construisant une infrastructure complète :
 
-3 microservices Flask (Frontend, Product API, Order API)
+- 3 microservices Flask (Frontend, Product API, Order API)
 
-Conteneurisation avec Docker
+- Conteneurisation avec Docker
 
-Orchestration avec Kubernetes (Minikube)
+- Orchestration avec Kubernetes (Minikube)
 
-CI/CD avec GitHub Actions
+- CI/CD avec GitHub Actions
 
-__⚠️ Note Importante sur l'Automatisation__
-GitHub Actions est utilisé uniquement pour les tests et la validation, tandis que le déploiement se fait manuellement sur Minikube localement. Cette approche est choisie pour :
+__⚠️ Note Importante sur l'Automatisation:__
+GitHub Actions est utilisé uniquement pour les tests et la validation, tandis que le déploiement se fait manuellement sur Minikube localement
 
-Économie de coûts : Pas besoin d'un cluster Kubernetes cloud coûteux
+Cette approche est choisie pour :
 
-Apprentissage : Compréhension profonde des commandes manuelles
+- Économie de coûts : Pas besoin d'un cluster Kubernetes cloud coûteux
 
-Sécurité : Pas d'exposition de cluster sur internet
+- Apprentissage : Compréhension profonde des commandes manuelles
+
+- Sécurité : Pas d'exposition de cluster sur internet
 
 Le principe reste identique à une vraie production : si nous avions un cluster cloud (AWS EKS, Google GKE), GitHub Actions déploierait automatiquement
 
 ### **Workflow Global**
-__Vue d'ensemble du processus__
+__Vue d'ensemble du processus:__
 
 graph TD
     A[Développement local] --> B[Push sur GitHub]
@@ -63,25 +66,26 @@ graph TD
     end
 
 __Étapes clés :__
-__Développement :__ Code des microservices Flask
 
-__CI Automatisée :__ GitHub Actions teste tout automatiquement
+- __Développement :__ Code des microservices Flask
 
-__Validation :__ Dockerfiles et manifests Kubernetes vérifiés
+- __CI Automatisée :__ GitHub Actions teste tout automatiquement
 
-__Déploiement Manuel :__ Commandes exécutées localement sur Minikube
+- __Validation :__ Dockerfiles et manifests Kubernetes vérifiés
+
+- __Déploiement Manuel :__ Commandes exécutées localement sur Minikube
 
 ### **🛠️ Workflow Technique**
 __1. Phase de Développement (Local)__
 
-# Écriture du code Python
-# Test avec Docker Compose
-docker-compose up -d
-# Vérification : http://localhost:5000
+- Écriture du code Python
+- Test avec Docker Compose
+   docker-compose up -d
+- Vérification : http://localhost:5000
 
 __2. Phase CI Automatisée (GitHub Actions)__
 yaml
-# .github/workflows/ci-cd.yml
+ .github/workflows/ci-cd.yml
 name: CI/CD Pipeline CloudShop
 
 on: [push]  # Déclenché à chaque git push
@@ -99,6 +103,7 @@ jobs:
     - Build images Docker
     - Simulation déploiement  # Écho seulement, pas de vrai déploiement
     - Génération rapport
+
 __Points clés de GitHub Actions :__
 
 ✅ Validation Dockerfiles : Vérifie que les Dockerfiles sont syntaxiquement corrects
@@ -109,53 +114,62 @@ Pas de vrai déploiement : Pas de cluster K8s accessible sur GitHub
 
 __3. Phase de Déploiement Manuel (Local - Minikube)__
 bash
-# 1. Démarrer l'environnement
+- Démarrer l'environnement
 minikube start --driver=docker
 
-# 2. Construire dans Minikube
+- Construire dans Minikube
 minikube image build -t frontend:latest ./frontend
 
-# 3. Déployer sur Kubernetes
+- Déployer sur Kubernetes
 kubectl apply -f kubernetes/
 
-# 4. Accéder à l'application
+- Accéder à l'application
 minikube service frontend-service --url
 🚀 Commandes de Déploiement
 📋 Cheat Sheet des Commandes Essentielles
-Initialisation et Setup
+
+### **Initialisation et Setup**
 bash
-# Démarrer Minikube (cluster Kubernetes local)
+
+__Démarrer Minikube (cluster Kubernetes local)__
 minikube start --driver=docker
 
-# Vérifier l'état
+__Vérifier l'état__
 kubectl cluster-info
 minikube status
-Construction des Images
-bash
-# Méthode 1 : Directement dans Minikube
-minikube image build -t frontend:latest ./frontend
-minikube image build -t product-api:latest ./product-api
-minikube image build -t order-api:latest ./order-api
 
-# Méthode 2 : Via Docker de Minikube
-minikube docker-env
-# Exécuter la commande affichée
-docker build -t frontend:latest ./frontend
-Déploiement sur Kubernetes
+### **Construction des Images**
 bash
-# Appliquer toutes les configurations
+
+__Méthode via le Docker de Minikube__
+minikube docker-env
+(Exécuter la commande affichée)
+puis
+
+docker build -t frontend:latest ./frontend
+
+
+### **Déploiement sur Kubernetes**
+bash
+
+__Appliquer toutes les configurations__
 kubectl apply -f kubernetes/
 
-Accès aux Services
+### **Accès aux Services**
+
 bash
 # Frontend (interface web)
+
 kubectl port-forward service/frontend-service 8080:80
-# Navigateur : http://localhost:8080
+
+__Navigateur : http://localhost:8080__
 
 # Product API (catalogue)
+
 kubectl port-forward service/product-api-service 5001:5000
-# Tester : curl http://localhost:5001/products
+__Tester : curl http://localhost:5001/products__
 
 # Order API (commandes)
+
 kubectl port-forward service/order-api-service 5002:5000
-# Tester : curl http://localhost:5002/orders
+__Tester : curl http://localhost:5002/orders__
