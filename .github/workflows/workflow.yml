@@ -1,0 +1,77 @@
+name: CI/CD Pipeline - k8s_microservices
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'README.md' #on ne trigger pas le pipeline quand il s'agit d'une modification d'un fichier markdown (comme notre README)
+      - '*.md'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-and-test:
+    name: "Validation et Tests"
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4 #checkout de notre code dans la vm githubactions
+    
+    - uses: actions/setup-python@v4 #installation python
+      with:
+        python-version: '3.12'
+    
+    - name: Test Frontend
+      working-directory: ./frontend #githubactions se rends dans frontend/ (sur sa vm) et va éxecuter les commandes python de tests
+      run: |
+        pip install -r requirements.txt
+        python -c "from app import app; print('Frontend import OK')"
+        python -c "import app; print('Flask app created')"
+
+    - name: Test Product API
+      working-directory: ./product-api
+      run: |
+        pip install -r requirements.txt
+        python -c "from app import app; print('Product API import OK')"
+        python -c "import app; test_app = app.app.test_client(); r = test_app.get('/health'); print('Health status:', r.status_code)"
+    
+    - name: Test Order API
+      working-directory: ./order-api
+      run: |
+        pip install -r requirements.txt
+        python -c "from app import app; print('Order API import OK')"
+        python -c "import app; test_app = app.app.test_client(); r = test_app.get('/health'); print('Health status:', r.status_code)"
+    
+    - name: Valider Dockerfiles
+      run: |
+        echo "Validation Dockerfiles..."
+        docker build -t test-frontend ./frontend --target=build 2>/dev/null && echo "Frontend Dockerfile valid"
+        docker build -t test-product ./product-api --target=build 2>/dev/null && echo "Product API Dockerfile valid"
+        docker build -t test-order ./order-api --target=build 2>/dev/null && echo "Order API Dockerfile valid"
+    # --target=build permet de s'arrêter juste avant l'étape du build
+    - name: Valider Kubernetes
+      run: |
+        echo "Validation manifests Kubernetes..."
+        kubectl apply --dry-run=client -f kubernetes/deployments.yaml && echo "deployments.yaml valid"
+        kubectl apply --dry-run=client -f kubernetes/services.yaml && echo "services.yaml valid"
+
+    # --dry-run=client permet de ne déployer sur aucun cluster kubernetes, car ici on veut seulement tester
+
+
+  build-and-deploy:
+    name: "Build et Déploiement"
+    runs-on: ubuntu-latest
+    needs: validate-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build images Docker
+      run: |
+        echo "Construction des images Docker..."
+        docker build -t frontend:latest ./frontend
+        docker build -t product-api:latest ./product-api
+        docker build -t order-api:latest ./order-api
+        echo "Images Docker construites"
+    #on construit les images mais on ne les utilisera pas, c'est seulement pour s'assurer que le build fonctionne
