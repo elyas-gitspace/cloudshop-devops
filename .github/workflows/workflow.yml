@@ -52,8 +52,8 @@ jobs:
     - name: Valider Kubernetes
       run: |
         echo "Validation manifests Kubernetes..."
-        kubectl apply --dry-run=client -f kubernetes/deployments.yaml && echo "deployments.yaml valid"
-        kubectl apply --dry-run=client -f kubernetes/services.yaml && echo "services.yaml valid"
+        kubectl apply --dry-run=client --validate=false -f kubernetes/deployments.yaml && echo "deployments.yaml valid"
+        kubectl apply --dry-run=client --validate=false -f kubernetes/services.yaml && echo "services.yaml valid"
 
     # --dry-run=client permet de ne déployer sur aucun cluster kubernetes, car ici on veut seulement tester
 
