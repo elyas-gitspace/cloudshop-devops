@@ -136,76 +136,82 @@ __3. Phase de Déploiement Manuel (Local - Minikube)__
 ```
 bash
 - Démarrer l'environnement
-_minikube start --driver=docker_
+
+minikube start --driver=docker
 
 - Construire dans Minikube
-_minikube image build -t frontend:latest ./frontend_
+
+minikube image build -t frontend:latest ./frontend
 
 - Déployer sur Kubernetes
-_kubectl apply -f kubernetes/_
+kubectl apply -f kubernetes/
 
 - Accéder à l'application
-_minikube service frontend-service --url_
-🚀 Commandes de Déploiement
-📋 Cheat Sheet des Commandes Essentielles
+minikube service frontend-service --url
 ```
+
+### **🚀 Commandes de Déploiement**
+📋 Cheat Sheet des Commandes Essentielles
+
 
 ### **Initialisation et Setup:**
 ```
-_bash_
+bash
 
-__Démarrer Minikube (cluster Kubernetes local):__
+- Démarrer Minikube (cluster Kubernetes local):
 
-_minikube start --driver=docker_
+minikube start --driver=docker
 
-__Vérifier l'état:__
+- Vérifier l'état:
 
-_kubectl cluster-info_
-_minikube status_
+kubectl cluster-info
+minikube status
 ```
 
 ### **Construction des Images:**
 
 ```
-_bash_
+bash
 
-__Méthode via le Docker de Minikube:__
+- Méthode via le Docker de Minikube:
 
-_minikube docker-env_
+minikube docker-env
 (Exécuter la commande affichée)
 puis
 
-_docker build -t frontend:latest ./frontend_
-
+docker build -t frontend:latest ./frontend
 ```
 
 ### **Déploiement sur Kubernetes:**
 
+```
+bash
 
-_bash_
+- Appliquer toutes les configurations:
 
-__Appliquer toutes les configurations:__
-
-_kubectl apply -f kubernetes/_
+kubectl apply -f kubernetes/
+```
 
 ### **Accès aux Services:**
 
-_bash_
+```
+bash
 
-__Frontend (interface web):__
+- Frontend (interface web):
 
-_kubectl port-forward service/frontend-service 8080:80_
+kubectl port-forward service/frontend-service 8080:80_
 
-__Navigateur http://localhost:8080__
+- Navigateur http://localhost:8080__
 
-__Product API (catalogue):__
+Product API (catalogue):
 
-_kubectl port-forward service/product-api-service 5001:5000_
+kubectl port-forward service/product-api-service 5001:5000
 
-__Tester : curl http://localhost:5001/products__
+Tester : curl http://localhost:5001/products__
 
-__Order API (commandes):__
+Order API (commandes):__
 
-_kubectl port-forward service/order-api-service 5002:5000_
+kubectl port-forward service/order-api-service 5002:5000
 
-__Tester : curl http://localhost:5002/orders__
+Tester : curl http://localhost:5002/orders
+```
