@@ -1,6 +1,8 @@
 ### **CloudShop - Plateforme E-commerce Microservices DevOps**
+
 __📋 Table des Contenus:__
 
+```
 - 🎯 Présentation du Projet
 
 - 🔄 Workflow Global
@@ -12,10 +14,11 @@ __📋 Table des Contenus:__
 - 🔧 Technologies Utilisées
 
 - 📊 Architecture
+```
 
 __Présentation du Projet:__
 
-CloudShop est un projet DevOps complet qui simule le cycle de vie d'une application e-commerce moderne, depuis le développement jusqu'au déploiement en production.
+```CloudShop est un projet DevOps complet qui simule le cycle de vie d'une application e-commerce moderne, depuis le développement jusqu'au déploiement en production```
 
 __Objectif Principal:__
 
