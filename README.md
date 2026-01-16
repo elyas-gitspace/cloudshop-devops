@@ -22,6 +22,7 @@ __Présentation du Projet:__
 
 __Objectif Principal:__
 
+```
 Démontrer les compétences DevOps en construisant une infrastructure complète :
 
 - 3 microservices Flask (Frontend, Product API, Order API)
@@ -31,9 +32,11 @@ Démontrer les compétences DevOps en construisant une infrastructure complète 
 - Orchestration avec Kubernetes (Minikube)
 
 - CI/CD avec GitHub Actions
+```
 
 __⚠️ Note Importante sur l'Automatisation:__
 
+```
 GitHub Actions est utilisé uniquement pour les tests et la validation, tandis que le déploiement se fait manuellement sur Minikube localement
 
 Cette approche est choisie pour :
@@ -45,10 +48,12 @@ Cette approche est choisie pour :
 - Sécurité : Pas d'exposition de cluster sur internet
 
 Le principe reste identique à une vraie production : si nous avions un cluster cloud (AWS EKS, Google GKE), GitHub Actions déploierait automatiquement
+```
 
 ### **Workflow Global**
 __Vue d'ensemble du processus:__
 
+```
 graph TD
     A[Développement local] --> B[Push sur GitHub]
     B --> C[GitHub Actions CI]
@@ -70,8 +75,11 @@ graph TD
         J --> K[Application en ligne]
     end
 
+```
+
 __Étapes clés :__
 
+```
 - __Développement :__ Code des microservices Flask
 
 - __CI Automatisée :__ GitHub Actions teste tout automatiquement
@@ -79,18 +87,21 @@ __Étapes clés :__
 - __Validation :__ Dockerfiles et manifests Kubernetes vérifiés
 
 - __Déploiement Manuel :__ Commandes exécutées localement sur Minikube
+```
 
 ### **🛠️ Workflow Technique**
 
 __1. Phase de Développement (Local)__
 
+```
 - Écriture du code Python
 - Test avec Docker Compose
    docker-compose up -d
 - Vérification : http://localhost:5000
-
+```
 __2. Phase CI Automatisée (GitHub Actions)__
 
+```
 yaml
  .github/workflows/ci-cd.yml
 name: CI/CD Pipeline CloudShop
@@ -118,9 +129,11 @@ __Points clés de GitHub Actions :__
 ✅ Validation Kubernetes : Vérifie que les fichiers YAML sont valides (--dry-run)
 
 Pas de vrai déploiement : Pas de cluster K8s accessible sur GitHub
+```
 
 __3. Phase de Déploiement Manuel (Local - Minikube)__
 
+```
 bash
 - Démarrer l'environnement
 _minikube start --driver=docker_
@@ -135,9 +148,10 @@ _kubectl apply -f kubernetes/_
 _minikube service frontend-service --url_
 🚀 Commandes de Déploiement
 📋 Cheat Sheet des Commandes Essentielles
+```
 
 ### **Initialisation et Setup:**
-
+```
 _bash_
 
 __Démarrer Minikube (cluster Kubernetes local):__
@@ -148,9 +162,11 @@ __Vérifier l'état:__
 
 _kubectl cluster-info_
 _minikube status_
+```
 
 ### **Construction des Images:**
 
+```
 _bash_
 
 __Méthode via le Docker de Minikube:__
@@ -161,8 +177,10 @@ puis
 
 _docker build -t frontend:latest ./frontend_
 
+```
 
 ### **Déploiement sur Kubernetes:**
+
 
 _bash_
 
